@@ -1,0 +1,46 @@
+.iconButton{
+    transition: all 0.4s !important;
+}
+.iconButton:hover{
+    background-color: gray !important;
+    box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.4) !important;
+}
+
+.card{
+    transition: all 0.4s !important;
+}
+.card:hover{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: rgb(0, 0, 176);
+    box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Custom Fonts */
+
+@font-face{
+    font-family: Rubik;
+    src: url("../public/fonts/Rubik-Light.ttf");
+    font-weight: 100;
+}
+@font-face{
+    font-family: Rubik;
+    src: url("../public/fonts/Rubik-Medium.ttf");
+    font-weight: 200;
+}
+@font-face{
+    font-family: Rubik;
+    src: url("../public/fonts/Rubik-Bold.ttf");
+    font-weight: bold;
+}
+@font-face{
+    font-family: Rubik;
+    src: url("../public/fonts/Rubik-ExtraBold.ttf");
+    font-weight: 800;
+}
+@font-face{
+    font-family: Rubik;
+    src: url("../public/fonts/Rubik-Black.ttf");
+    font-weight: 900;
+}
+/* == Custom Fonts == */
