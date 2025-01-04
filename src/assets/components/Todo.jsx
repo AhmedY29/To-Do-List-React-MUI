@@ -22,11 +22,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-export default function Todo({todo }) {
+export default function Todo({todo , showDelete , showUpdate }) {
   const { todos, setTodos } = useContext(TodoContext);
-  const [showDelateDialog, setShowDelateDialog] =useState(false);
-  const [showUpdateDialog, setShowUpdateDialog] =useState(false);
-  const [update, setUpdate] = useState({title:todo.title , details:todo.details});
 
   function handleClickCheck(){
     const newTodos = todos.map((t)=>{
@@ -39,117 +36,15 @@ export default function Todo({todo }) {
     localStorage.setItem('todos', JSON.stringify(newTodos));
   }
   function handleClickDelate(){
-    setShowDelateDialog(true);
-  }
-
-  function handleDelateClose(){
-    setShowDelateDialog(false);
-  }
-
-  function handleDelateConfirm(){
-    const newTodos = todos.filter((t) =>{
-      return t.id !== todo.id;
-    })
-    setTodos(newTodos);
-    localStorage.setItem('todos', JSON.stringify(newTodos));
-  }
-  function handleUpdate(){
-    const newTodos = todos.map((t) =>{
-      if(t.id == todo.id){
-        return {...t, title: update.title, details: update.details}
-      }else{
-        return t;
-      }
-    });
-    setTodos(newTodos);
-    localStorage.setItem('todos', JSON.stringify(newTodos));
-    setShowUpdateDialog(false);
-  }
-
-  function handleUpdateClose(){
-    setShowUpdateDialog(false);
+    showDelete(todo)
   }
 
   function handleClickUpdate(){
-    setShowUpdateDialog(true);
+    showUpdate(todo)
   }
 
   return (
     <>
-      {/* dialog Delate*/}
-      <Dialog
-        style={{direction: 'rtl'}}
-        open={showDelateDialog}
-        onClose={handleDelateClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"هل انت متأكد من حذف المهمة"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            لن تتمكن من ارجاع المهمة بعد الحذف نهائيًا!
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDelateClose}>اغلاق</Button>
-          <Button onClick={handleDelateConfirm} autoFocus>
-            نعم قم بالحذف
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/* == dialog Delate == */}
-
-      {/* Dialog Update */}
-      <Dialog
-        style={{direction: 'rtl'}}
-        open={showUpdateDialog}
-        onClose={handleUpdateClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"هل انت متأكد من حذف المهمة"}
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="name"
-              name="email"
-              label="عنوان المهمة"
-              value={update.title}
-              onChange={(e)=>{
-                setUpdate({...update, title:e.target.value})
-              }}
-              fullWidth
-              variant="standard"
-              />
-          <TextField
-              required
-              margin="dense"
-              id="name"
-              name="email"
-              label="التفاصيل"
-              value={update.details}
-              onChange={(e)=>{
-                setUpdate({...update, details:e.target.value})
-              }}
-              fullWidth
-              variant="standard"
-              />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleUpdateClose}>اغلاق</Button>
-          <Button onClick={handleUpdate} autoFocus>
-            تأكيد
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/* == Dialog Update == */}
-
       <Card className='card' sx={{ minWidth: 275 , backgroundColor: 'blue', marginTop: 5}}>
         <CardContent>
           <Grid container>
