@@ -19,6 +19,7 @@ import {useState, useContext, useEffect , useMemo} from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 import { TodoContext } from '../../context/TodoContext';
+import { useToast } from '../../context/ToastContext';
 
 
 
@@ -27,6 +28,7 @@ import { TodoContext } from '../../context/TodoContext';
 
 export default function Todolist() {
   const {todos , setTodos} = useContext(TodoContext);
+  const { openUntil } = useToast();
   const [titleInput , setTitleInput] = useState('');
   const [dialogTodo , setDialogTodo] = useState(null);
   const [displayFilter , setDisplayFilter] = useState('all');
@@ -39,7 +41,7 @@ export default function Todolist() {
     return todos.filter((t)=> {return t.completed});
   }, [todos])
   const non_completedTodos = useMemo(() => {
-    todos.filter((t)=> {return !t.completed});
+    return todos.filter((t)=> {return !t.completed});
   },[todos])
 
   let displayToBeRendered = todos
@@ -75,6 +77,7 @@ export default function Todolist() {
     setTodos(updatedTodos);
     localStorage.setItem('todos', JSON.stringify(updatedTodos));
     setTitleInput('');
+    openUntil("تم اضافة مهمة جديدة بنجاح")
   }
 
   function handleDelateClose(){
@@ -92,6 +95,7 @@ export default function Todolist() {
     setTodos(newTodos);
     localStorage.setItem('todos', JSON.stringify(newTodos));
     handleDelateClose()
+    openUntil('تم حذف المهمة بنجاح')
   }
 
 
@@ -106,6 +110,7 @@ export default function Todolist() {
     setTodos(newTodos);
     localStorage.setItem('todos', JSON.stringify(newTodos));
     setShowUpdateDialog(false);
+    openUntil("تم تعديل المهمة بنجاح")
   }
 
   function handleUpdateClose(){
@@ -202,7 +207,7 @@ export default function Todolist() {
 
         <Container maxWidth="sm">
             {/* Card */}
-            <Card sx={{ minWidth: 275 }} style={{maxHeight:"90vh" , overflow:'scroll'}}>
+            <Card sx={{ minWidth: 275 }} style={{maxHeight:"90vh" , overflowY:'scroll'}}>
           <CardContent>
             <Typography variant="h2" sx={{textAlign:'center'}}>
               مهامي

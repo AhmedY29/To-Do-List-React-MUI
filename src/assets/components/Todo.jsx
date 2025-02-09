@@ -6,13 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import '../../style.css'
 import { useContext, useState } from 'react';
 import { TodoContext } from '../../context/TodoContext';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { useToast } from '../../context/ToastContext';
 
 
 
@@ -24,6 +18,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function Todo({todo , showDelete , showUpdate }) {
   const { todos, setTodos } = useContext(TodoContext);
+  const { openUntil } = useToast();
+  
 
   function handleClickCheck(){
     const newTodos = todos.map((t)=>{
@@ -34,6 +30,7 @@ export default function Todo({todo , showDelete , showUpdate }) {
     })
     setTodos(newTodos);
     localStorage.setItem('todos', JSON.stringify(newTodos));
+    openUntil("تم تعديل حالة المهمة")
   }
   function handleClickDelate(){
     showDelete(todo)
