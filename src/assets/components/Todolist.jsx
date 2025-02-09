@@ -20,6 +20,8 @@ import {useState, useContext, useEffect , useMemo} from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { TodoContext } from '../../context/TodoContext';
 import { useToast } from '../../context/ToastContext';
+import { useReducer } from 'react';
+import todoReducer from '../../reducers/todoReducer';
 
 
 
@@ -27,7 +29,7 @@ import { useToast } from '../../context/ToastContext';
 
 
 export default function Todolist() {
-  const {todos , setTodos} = useContext(TodoContext);
+  const {todos2 , setTodos} = useContext(TodoContext);
   const { openUntil } = useToast();
   const [titleInput , setTitleInput] = useState('');
   const [dialogTodo , setDialogTodo] = useState(null);
@@ -35,6 +37,8 @@ export default function Todolist() {
   const [showDelateDialog, setShowDelateDialog] =useState(false);
   const [showUpdateDialog, setShowUpdateDialog] =useState(false);
   const [update, setUpdate] = useState({title:null , details:null});
+
+  const [todos, dispatch] = useReducer(todoReducer, [])
 
   //add useMemo
   const completedTodos = useMemo(()=>{
@@ -58,24 +62,24 @@ export default function Todolist() {
   });
 
   useEffect(()=> {
-    console.log('Use Effect');
-    const storedTodos = JSON.parse(localStorage.getItem('todos'))?? [];
-    setTodos(storedTodos);
+    dispatch({type:'get'})
   },[]);
 
   function changeDisplayFilter(e){
     setDisplayFilter(e.target.value);
   }
   function handleClickAdd(){
-    const newTodo = {
-      id: uuidv4(),
-      title: titleInput,
-      details: '',
-      completed: false,
-    }
-    const updatedTodos =[...todos , newTodo]
-    setTodos(updatedTodos);
-    localStorage.setItem('todos', JSON.stringify(updatedTodos));
+    // const newTodo = {
+    //   id: uuidv4(),
+    //   title: titleInput,
+    //   details: '',
+    //   completed: false,
+    // }
+    // const updatedTodos =[...todos , newTodo]
+    // setTodos(updatedTodos);
+    // localStorage.setItem('todos', JSON.stringify(updatedTodos));
+    //  details:{Utitle:update.title, Udetails:update.details}}
+    dispatch({type:'add', payload:{title:titleInput}})
     setTitleInput('');
     openUntil("تم اضافة مهمة جديدة بنجاح")
   }
@@ -89,26 +93,28 @@ export default function Todolist() {
   }
 
   function handleDelateConfirm(){
-    const newTodos = todos.filter((t) =>{
-      return t.id !== dialogTodo.id;
-    })
-    setTodos(newTodos);
-    localStorage.setItem('todos', JSON.stringify(newTodos));
+    // const newTodos = todos.filter((t) =>{
+    //   return t.id !== dialogTodo.id;
+    // })
+    // setTodos(newTodos);
+    // localStorage.setItem('todos', JSON.stringify(newTodos));
+    dispatch({type: 'delete', payload:{id:dialogTodo.id}})
     handleDelateClose()
     openUntil('تم حذف المهمة بنجاح')
   }
 
 
   function handleUpdate(){
-    const newTodos = todos.map((t) =>{
-      if(t.id == dialogTodo.id){
-        return {...t, title: update.title, details: update.details}
-      }else{
-        return t;
-      }
-    });
-    setTodos(newTodos);
-    localStorage.setItem('todos', JSON.stringify(newTodos));
+    // const newTodos = todos.map((t) =>{
+    //   if(t.id == dialogTodo.id){
+    //     return {...t, title: update.title, details: update.details}
+    //   }else{
+    //     return t;
+    //   }
+    // });
+    // setTodos(newTodos);
+    // localStorage.setItem('todos', JSON.stringify(newTodos));
+    dispatch({type:'update', payload:{id:dialogTodo.id, title:update.title, details:update.details}})
     setShowUpdateDialog(false);
     openUntil("تم تعديل المهمة بنجاح")
   }
