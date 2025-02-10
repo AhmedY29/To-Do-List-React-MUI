@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import '../../style.css'
 import { useContext, useState } from 'react';
-import { TodoContext } from '../../context/TodoContext';
+// import { TodoContext } from '../../context/TodoContext';
 import { useToast } from '../../context/ToastContext';
 
 
@@ -14,22 +14,17 @@ import { useToast } from '../../context/ToastContext';
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useTodos } from '../../context/TodoContext';
 
 
 export default function Todo({todo , showDelete , showUpdate }) {
-  const { todos, setTodos } = useContext(TodoContext);
+  // const { todos, setTodos } = useContext(TodoContext);
+  const { todos, dispatch } = useTodos()
   const { openUntil } = useToast();
   
 
   function handleClickCheck(){
-    const newTodos = todos.map((t)=>{
-      if(t.id === todo.id){
-        return {...t, completed:!t.completed}
-      }
-      return t;
-    })
-    setTodos(newTodos);
-    localStorage.setItem('todos', JSON.stringify(newTodos));
+    dispatch({type:'completed', payload:todo})
     openUntil("تم تعديل حالة المهمة")
   }
   function handleClickDelate(){

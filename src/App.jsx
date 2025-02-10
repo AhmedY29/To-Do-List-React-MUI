@@ -2,7 +2,7 @@ import './App.css'
 import Todolist from './assets/components/Todolist.jsx'
 import { createTheme , ThemeProvider } from '@mui/material/styles';
 
-import { TodoContext } from './context/TodoContext.jsx';
+import  TodosProvider  from './context/TodoContext.jsx';
 import { ToastProvider } from './context/ToastContext.jsx';
 import { v4 as uuidv4 } from 'uuid';
 import {useState} from 'react';
@@ -50,13 +50,13 @@ function App() {
   return (
     <>
     <ThemeProvider theme={theme}>
+      <TodosProvider>
       <ToastProvider>
-      <TodoContext.Provider value={{todos , setTodos}}>
       <div className='app' style={{direction:"rtl", display:'flex' ,justifyContent:'center' , alignItems:'center', height:'100%', width:'100%' }}>
         <Todolist/>
       </div>
-      </TodoContext.Provider>
       </ToastProvider>
+      </TodosProvider>
     </ThemeProvider>
     </>
   )

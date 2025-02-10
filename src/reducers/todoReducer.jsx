@@ -32,6 +32,17 @@ export default function todoReducer(currentState, action){
              return newTodos
 
         }
+        case "completed":{
+          const newTodos = currentState.map((t)=>{
+            if(t.id === action.payload.id){
+              return {...t, completed:!t.completed}
+            }
+            return t;
+          })
+          localStorage.setItem('todos', JSON.stringify(newTodos));
+          return newTodos
+
+        }
         case "get":{
             const storedTodos = JSON.parse(localStorage.getItem('todos'))?? [];
             return storedTodos

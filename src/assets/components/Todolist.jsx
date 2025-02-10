@@ -18,10 +18,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {useState, useContext, useEffect , useMemo} from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
-import { TodoContext } from '../../context/TodoContext';
+import { useTodos } from '../../context/TodoContext';
 import { useToast } from '../../context/ToastContext';
-import { useReducer } from 'react';
-import todoReducer from '../../reducers/todoReducer';
 
 
 
@@ -29,7 +27,6 @@ import todoReducer from '../../reducers/todoReducer';
 
 
 export default function Todolist() {
-  const {todos2 , setTodos} = useContext(TodoContext);
   const { openUntil } = useToast();
   const [titleInput , setTitleInput] = useState('');
   const [dialogTodo , setDialogTodo] = useState(null);
@@ -38,7 +35,7 @@ export default function Todolist() {
   const [showUpdateDialog, setShowUpdateDialog] =useState(false);
   const [update, setUpdate] = useState({title:null , details:null});
 
-  const [todos, dispatch] = useReducer(todoReducer, [])
+  const { todos, dispatch } = useTodos()
 
   //add useMemo
   const completedTodos = useMemo(()=>{
